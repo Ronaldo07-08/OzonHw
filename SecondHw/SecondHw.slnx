@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="GrpcClient/GrpcClient.csproj" Id="6f80dfe4-fe95-4605-b530-102a1755bd44" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="Presentation/Presentation.csproj" />
+</Solution>
