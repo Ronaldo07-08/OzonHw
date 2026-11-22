@@ -1,6 +1,5 @@
 ﻿using Domain.Models;
 
-
 namespace Presentation.Interfaces
 {
     public interface IReportWriter

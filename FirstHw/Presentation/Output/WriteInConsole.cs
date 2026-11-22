@@ -1,6 +1,5 @@
 ﻿using Domain.Models;
 using Presentation.Interfaces;
-using System.Globalization;
 
 namespace Presentation.Output
 {
