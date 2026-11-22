@@ -2,62 +2,43 @@
 using Domain.Interfaces;
 using Domain.Models;
 using System.Globalization;
-using System.IO;    
 
 namespace Infrastructure
 {
     public class CSVRepository : IRepository
     {
-        private static char separator = ',';
+        private const string FileName = "orders_log.csv";
+        private const char Separator = ',';
+        private const int ColumnsCount = 5;
+        private const int FirstDataLineIndex = 1;
 
         public List<OrderedItem> GetAllOrders()
         {
-            var appDirectory = AppContext.BaseDirectory;
-            var filePath = Path.Combine(appDirectory, "orders_log.csv");
-
+            var filePath = Path.Combine(AppContext.BaseDirectory, FileName);
             var lines = File.ReadAllLines(filePath);
-            var allItems = new List<OrderedItem>();
+            var orders = new List<OrderedItem>();
 
-            for (var ind = 1; ind < lines.Length; ind++) // пропускаем заголовок
+            for (var lineIndex = FirstDataLineIndex; lineIndex < lines.Length; lineIndex++)
             {
-                var line = lines[ind];
-
-                var data = line.Split(separator);
-
-                if (data.Length > 0)
-                {
-                    var orderedItem = ParseLineData(data, ind);
-                    allItems.Add(orderedItem);
-                }
+                var columns = lines[lineIndex].Split(Separator);
+                orders.Add(ParseOrder(columns, lineIndex + 1));
             }
 
-            return allItems;
-            
+            return orders;
         }
 
-        private static OrderedItem ParseLineData(string[] data, int stringIndexInFile)
+        private static OrderedItem ParseOrder(string[] columns, int lineNumber)
         {
-            long clientId;
-            long orderId;
-            string itemName;
-            int itemQuantity;
-            float itemPrice;
-
-            if (data.Length != 5 ||
-                !long.TryParse(data[0], out clientId) ||
-                !long.TryParse(data[1], out orderId) ||
-                !int.TryParse(data[3], out itemQuantity) ||
-                !float.TryParse(data[4], CultureInfo.InvariantCulture, out itemPrice))
+            if (columns.Length != ColumnsCount ||
+                !long.TryParse(columns[0], out var clientId) ||
+                !long.TryParse(columns[1], out var orderId) ||
+                !int.TryParse(columns[3], out var quantity) ||
+                !decimal.TryParse(columns[4], CultureInfo.InvariantCulture, out var price))
             {
-                throw new BadRepositoryException(
-                    $"Ошибка сохранения данных в репозитории в строке - {stringIndexInFile}");
-            }
-            else
-            {
-                itemName = data[2];
-                return new OrderedItem(clientId, orderId, itemName, itemQuantity, itemPrice);
+                throw new BadRepositoryException($"Ошибка чтения данных из файла в строке {lineNumber}.");
             }
 
+            return new OrderedItem(clientId, orderId, columns[2], quantity, price);
         }
     }
 }

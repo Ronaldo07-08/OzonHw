@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Models
+﻿namespace Domain.Models
 {
-    public class ClientReport
-    {
-        public long ClientId { get; init; }
-        public float OrdersSum { get; set; }
-        public string FavoriteItem { get; set; }
-
-        public ClientReport(long clientId)
-        {
-            ClientId = clientId;
-        }
-    }
+    public record ClientReport(long ClientId, decimal OrdersSum, string FavoriteItem);
 }
