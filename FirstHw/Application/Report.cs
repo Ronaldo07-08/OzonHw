@@ -16,7 +16,7 @@ namespace Application
         public List<ClientReport> GetReport(List<long> clientsIds)
         {
             var allOrders = _repo.GetAllOrders();
-            //сопоставляем id клиента к результирующему отзыву о нем
+            // ч1сопоставляем id клиента к результирующему отзыву о нем
             var clientToReport = new Dictionary<long, ClientReport>();
             // id клиента - все его айтемы + для каждого айтема его количество
             var clientToItems = new Dictionary<long, Dictionary<string, int>>();
