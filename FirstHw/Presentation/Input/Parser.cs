@@ -1,28 +1,24 @@
 ﻿using Domain.Exceptions;
 
-
 namespace Presentation.Input
 {
     public static class Parser
     {
-
-        public static List<long> ParseStringToLong(string[] arr) 
+        public static List<long> ParseClientIds(string[] arguments)
         {
-            var res = new List<long>();
-            
-            for (var ind = 0; ind < arr.Length; ind++)
+            var clientIds = new List<long>();
+
+            foreach (var argument in arguments)
             {
-                if (long.TryParse(arr[ind], out long id))
+                if (!long.TryParse(argument, out var clientId))
                 {
-                    res.Add(id);
-                }
-                else
-                {
-                    throw new WrongInputException($"Некорректное значение ClientId - {arr[ind]}");
+                    throw new WrongInputException($"Некорректное значение ClientId - {argument}");
                 }
 
+                clientIds.Add(clientId);
             }
-            return res;
+
+            return clientIds;
         }
     }
 }

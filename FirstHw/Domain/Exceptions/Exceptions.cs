@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Exceptions
+﻿namespace Domain.Exceptions
 {
     public class ClientNotFoundException : Exception
     {
+        public List<long> ClientIds { get; }
 
-        public List<long> ClientsIds { get; init; }
-
-        public ClientNotFoundException(List<long> notFoundClients) : base($"Клиентов в с id {string.Join(", ", notFoundClients)} нет в базе")
+        public ClientNotFoundException(List<long> clientIds)
+            : base($"Клиенты с id [{string.Join(", ", clientIds)}] не найдены.")
         {
-            ClientsIds = notFoundClients;
+            ClientIds = clientIds;
         }
     }
 

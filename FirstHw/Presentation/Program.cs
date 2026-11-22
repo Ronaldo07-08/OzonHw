@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Presentation.Input;
 using Presentation.Interfaces;
 using Presentation.Output;
+
 namespace Presentation;
 
 public class Program
@@ -21,7 +22,6 @@ public class Program
         try
         {
             var services = new ServiceCollection();
-
             var mode = args[0];
 
             Builder.ConfigureServices(services, mode);
@@ -30,23 +30,22 @@ public class Program
             var report = provider.GetRequiredService<Report>();
             var writer = provider.GetRequiredService<IReportWriter>();
 
-            var ids = Parser.ParseStringToLong(args.Skip(1).ToArray());
-            var clientReports = report.GetReport(ids);
+            var clientIds = Parser.ParseClientIds(args.Skip(1).ToArray());
+            var clientReports = report.GetReport(clientIds);
 
             writer.ShowReport(clientReports);
         }
-        catch (ClientNotFoundException ex)
+        catch (ClientNotFoundException exception)
         {
-            var response = $"Клиентов с id [{string.Join(", ", ex.ClientsIds)}] нет в базе";
-            Console.WriteLine(response);
+            Console.WriteLine($"Клиентов с id [{string.Join(", ", exception.ClientIds)}] нет в базе.");
         }
-        catch (WrongInputException ex)
+        catch (WrongInputException exception)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine(exception.Message);
         }
-        catch (BadRepositoryException ex)
+        catch (BadRepositoryException exception)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine(exception.Message);
         }
     }
 }
