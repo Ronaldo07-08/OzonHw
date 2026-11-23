@@ -27,7 +27,8 @@ namespace Presentation.Rest
         public void ConfigureServices(IServiceCollection services)
         {
             //DI
-            services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+            //services.AddSingleton<IProductRepository, InMemoryProductRepository>(); // Реализация репозитория в памяти
+            services.AddInfrastructure(Configuration);
             services.AddScoped<IProductService, ProductService>();
 
             //REST
@@ -54,7 +55,7 @@ namespace Presentation.Rest
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) 
         {
-
+            app.ApplicationServices.MigrateDatabase();
 
             if (env.IsDevelopment())
             {

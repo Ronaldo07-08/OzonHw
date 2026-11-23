@@ -4,6 +4,7 @@ option csharp_namespace = "Presentation.Grpc";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 service ProductGrpc{
     rpc CreateProduct (CreateProductGrpcRequest) returns (CreateProductGrpcResponse){
@@ -22,6 +23,13 @@ service ProductGrpc{
     rpc GetFilteredProducts (GetFilteredProductsGrpcRequest) returns (GetFilteredProductsGrpcResponse){
         option (google.api.http) = {
             get: "/v1/grpc/filtered_products"
+        };
+    }
+
+    rpc UpdateProduct (UpdateProductGrpcRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/grpc/product/{id}"
+            body: "*"
         };
     }
 }
@@ -72,4 +80,11 @@ message GetFilteredProductsGrpcResponse{
     repeated GetProductGrpcResponse filtered_products = 1;
 }
 
-
+message UpdateProductGrpcRequest {
+    int64 id = 1;
+    string name = 2;
+    double price = 3;
+    double weight = 4;
+    GrpcProductType type = 5;
+    int32 warehouse_num = 6;
+}
