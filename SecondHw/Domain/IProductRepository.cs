@@ -1,12 +1,15 @@
-﻿namespace Domain
-{
-    public interface IProductRepository
-    {
-        Task<long> Create(
-            string name, decimal price, double weight, ProductType type, int warehouseNum);
-        Task<List<Product>> GetFilteredProducts(
-            ProductType? type, DateTime? createdAt, int? warehouseNum, int offset, int limit);
+﻿namespace Domain;
 
-        Task<Product> GetProduct(long id); 
-    }
+public interface IProductRepository
+{
+    Task<long> Create(Product product, CancellationToken ct = default);
+    Task<Product?> GetById(long id, CancellationToken ct = default);
+    Task<IReadOnlyList<Product>> GetFiltered(
+        ProductType? type,
+        DateTime? createdAt,
+        int? warehouseNum,
+        int offset,
+        int limit,
+        CancellationToken ct = default);
+    Task<bool> Update(Product product, CancellationToken ct = default);
 }
