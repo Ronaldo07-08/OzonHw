@@ -24,6 +24,10 @@ namespace Presentation.Grpc.Interceptors
             {
                 throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
             }
+            catch (CannotUpdateProductException ex)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
+            }
             catch (Exception ex) when (ex is not RpcException)
             {
                 throw new RpcException(new Status(StatusCode.Internal, ex.Message));

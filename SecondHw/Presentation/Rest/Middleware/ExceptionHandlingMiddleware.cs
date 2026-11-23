@@ -31,6 +31,12 @@ namespace Presentation.Rest.Middleware
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
+            catch (CannotUpdateProductException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;

@@ -26,7 +26,8 @@ namespace Presentation.Rest.Controllers
                 request.Price,
                 request.Weight,
                 request.Type,
-                request.WarehouseNum);
+                request.WarehouseNum,
+                cancellationToken);
 
             return CreatedAtAction(nameof(GetProduct), new { id = productId }, productId);
         }
@@ -43,7 +44,8 @@ namespace Presentation.Rest.Controllers
                 request.Date,
                 request.WarehouseNum,
                 request.Offset,
-                request.Limit);
+                request.Limit,
+                cancellationToken);
 
             var dto = filteredProducts.Select(
                 p => new GetProductResponse(
@@ -73,6 +75,13 @@ namespace Presentation.Rest.Controllers
                 product.WarehouseNum);
 
             return Ok(dto);
+        }
+
+        [HttpPut("{id:long}")]
+        public async Task<IActionResult> UpdateProduct(long id, [FromBody] UpdateProductRequest request, CancellationToken ct)
+        {
+            await _service.UpdateProduct(id, request.Name, request.Price, request.Weight, request.Type, request.WarehouseNum, ct);
+            return NoContent();
         }
     }
 }

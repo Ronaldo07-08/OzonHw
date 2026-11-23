@@ -73,6 +73,18 @@ namespace Presentation.Grpc.GrpcServices
             };
         }
 
+        public override async Task<Empty> UpdateProduct(UpdateProductGrpcRequest request, ServerCallContext context)
+        {
+            await _service.UpdateProduct(
+                request.Id,
+                request.Name,
+                (decimal)request.Price,
+                request.Weight,
+                (ProductType)request.Type,
+                request.WarehouseNum,
+                context.CancellationToken);
 
+            return new Empty();
+        }
     }
 }

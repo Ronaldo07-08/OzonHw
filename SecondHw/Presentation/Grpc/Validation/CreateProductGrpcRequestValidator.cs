@@ -24,6 +24,5 @@
                      .NotEmpty().WithMessage("Должен быть задан вес")
                      .GreaterThan(0).WithMessage("Вес должен быть больше 0");
             }
-
         }
     }
